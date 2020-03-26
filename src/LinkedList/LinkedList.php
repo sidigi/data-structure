@@ -121,9 +121,13 @@ class LinkedList
             return;
         }
 
-        return $this->first(static function (Node $item, $i) use ($nth) {
+        $node = $this->first(static function (Node $item, $i) use ($nth) {
             return $nth === $i;
-        })->value();
+        });
+
+        if ($node) {
+            return $node->value();
+        }
     }
 
     public function nthFromEnd(int $nth)
