@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\LinkedList;
+namespace App\DoubleLinkedList;
 
 class Node
 {
