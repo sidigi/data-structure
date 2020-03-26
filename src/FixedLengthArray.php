@@ -2,6 +2,8 @@
 
 namespace App;
 
+use InvalidArgumentException;
+
 class FixedLengthArray
 {
     protected $items;
@@ -16,9 +18,11 @@ class FixedLengthArray
     {
         if ($this->items->count() === $this->count) {
             $newItems = new \SplFixedArray($this->count * 2);
+
             for ($i = 0; $i < $this->count; $i++) {
                 $newItems[$i] = $this->items[$i];
             }
+
             $this->items = $newItems;
         }
 
@@ -28,10 +32,10 @@ class FixedLengthArray
     public function removeAt(int $index)
     {
         if ($index < 0 || $index >= $this->count) {
-            throw new InvalidArgumentException();
+            throw new InvalidArgumentException;
         }
 
-        for ($i = $index; $i < $this->count; $i++) {
+        for ($i = $index; $i < $this->count - 1; $i++) {
             $this->items[$i] = $this->items[$i + 1];
         }
 

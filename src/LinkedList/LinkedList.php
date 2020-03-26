@@ -56,16 +56,13 @@ class LinkedList
             return;
         }
 
-        $current = $this->first;
-        while ($current !== $this->last) {
-            $previous = $current;
-            $current = $current->next();
-        }
+        $value = $this->last->value();
 
+        $previous = $this->getPrevious($this->last);
         $previous->setNext(null);
         $this->last = null;
 
-        return $current->value();
+        return $value;
     }
 
     public function indexOf($value, bool $strict = false)
@@ -73,23 +70,23 @@ class LinkedList
         if ($this->isEmpty()) {
             return;
         }
+        $neededIndex = -1;
 
-        $current = $this->first;
-        $index = 0;
-        while ($current) {
-            if ($strict && $current->value() === $value) {
-                return $index;
+        return $this->first(static function (Node $item, $i) use ($value, $strict, &$neededIndex) {
+            if ($strict && $item->value() === $value) {
+                $neededIndex = $i;
+
+                return true;
             }
 
-            if (! $strict && $current->value() == $value) {
-                return $index;
+            if (! $strict && $item->value() == $value) {
+                $neededIndex = $i;
+
+                return true;
             }
+        });
 
-            $current = $current->next();
-            $index++;
-        }
-
-        return -1;
+        return $neededIndex;
     }
 
     public function contains($value, bool $strict = false)
@@ -123,16 +120,9 @@ class LinkedList
             return;
         }
 
-        $current = $this->first;
-        $index = 0;
-        while ($current) {
-            if ($index === $nth) {
-                return $current->value();
-            }
-
-            $current = $current->next();
-            $index++;
-        }
+        return $this->first(static function (Node $item, $i) use ($nth) {
+            return $nth === $i;
+        })->value();
     }
 
     public function nthFromEnd(int $nth)
@@ -160,21 +150,107 @@ class LinkedList
         return $first->value();
     }
 
-    public function toArray()
+    public function delete(int $value, $all = false)
     {
-        $current = $this->first;
+        if (! $all) {
+            $node = $this->first(static function (Node $item) use ($value) {
+                return $item->value() === $value;
+            });
 
-        $items = [];
-        while ($current) {
-            $items[] = $current->value();
-            $current = $current->next();
+            if ($node) {
+                $this->deleteNode($node);
+            }
+
+            return;
         }
 
-        return $items;
+        $this->each(function (Node $item, $i) use ($value, $all, &$deleted) {
+            if ($item->value() === $value) {
+                $this->deleteNode($item);
+            }
+        });
+    }
+
+    public function deleteByIndex(int $index)
+    {
+        $node = $this->first(static function (Node $item, $i) use ($index) {
+            return $index === $i;
+        });
+
+        if ($node) {
+            $this->deleteNode($node);
+        }
+    }
+
+    public function toArray()
+    {
+        return $this->map(static function (Node $item) {
+            return $item->value();
+        });
     }
 
     public function isEmpty()
     {
         return ! $this->first;
+    }
+
+    private function getPrevious(Node $node)
+    {
+        $current = $this->first;
+        while ($current !== $node) {
+            $previous = $current;
+            $current = $current->next();
+        }
+
+        return $previous;
+    }
+
+    private function deleteNode(Node $node)
+    {
+        if ($node === $this->first) {
+            $this->first = $node->next();
+
+            return;
+        }
+
+        $previous = $this->getPrevious($node);
+        $previous->setNext($node->next());
+    }
+
+    private function each(callable $callback)
+    {
+        $current = $this->first;
+        $index = 0;
+
+        while ($current) {
+            $callback($current, $index);
+            $current = $current->next();
+            $index++;
+        }
+    }
+
+    private function map(callable $callback)
+    {
+        $result = [];
+
+        $this->each(function (Node $item, $index) use (&$result, $callback) {
+            $result[] = $callback($item, $index);
+        });
+
+        return $result;
+    }
+
+    private function first(callable $callback)
+    {
+        $current = $this->first;
+        $index = 0;
+
+        while ($current) {
+            if ($callback($current, $index)) {
+                return $current;
+            }
+            $current = $current->next();
+            $index++;
+        }
     }
 }

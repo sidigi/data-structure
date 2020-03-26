@@ -70,7 +70,7 @@ $list->addLast(1);
 $list->reverse();
 print_r($list->toArray());
 
-//nth
+//nth from start
 $list = new LinkedList();
 $list->addLast(5);
 $list->addLast(4);
@@ -79,7 +79,7 @@ $list->addLast(2);
 $list->addLast(1);
 var_dump($list->nthFromFirst(2));
 
-//nth
+//nth from end
 $list = new LinkedList();
 $list->addLast(5);
 $list->addLast(4);
@@ -87,3 +87,22 @@ $list->addLast(3);
 $list->addLast(2);
 $list->addLast(1);
 var_dump($list->nthFromEnd(0));*/
+
+//delete
+$list = new LinkedList();
+$list->addLast(5);
+$list->addLast(2);
+$list->addLast(4);
+$list->addLast(3);
+$list->addLast(2);
+$list->addLast(2);
+$list->addLast(1);
+$list->delete(2, true);
+print_r($list->toArray());
+
+//delete by index
+/*$list = new LinkedList();
+$list->addLast(5);
+$list->addLast(2);
+$list->addLast(4);
+print_r($list->toArray());*/
