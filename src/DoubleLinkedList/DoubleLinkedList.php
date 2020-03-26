@@ -105,8 +105,9 @@ class DoubleLinkedList
         }
 
         $previous = $node->previous();
+        $next = $node->next();
 
-        $previous->setNext($node->next());
-        $previous->setPrevious($node);
+        $previous->setNext($next);
+        $next->setPrevious($previous);
     }
 }
