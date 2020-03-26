@@ -1,0 +1,17 @@
+{
+  "name": "sidigi/structure-code",
+  "authors": [
+    {
+      "name": "Sidigi",
+      "email": "sidigicoder@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  },
+  "require": {
+    "php": ">=7.4.0"
+  }
+}
