@@ -70,23 +70,24 @@ class LinkedList
         if ($this->isEmpty()) {
             return;
         }
-        $neededIndex = -1;
 
-        return $this->first(static function (Node $item, $i) use ($value, $strict, &$neededIndex) {
-            if ($strict && $item->value() === $value) {
-                $neededIndex = $i;
+        $current = $this->first;
+        $index = 0;
 
-                return true;
+        while ($current) {
+            if ($strict && $current->value() === $value) {
+                return $index;
             }
 
-            if (! $strict && $item->value() == $value) {
-                $neededIndex = $i;
-
-                return true;
+            if (! $strict && $current->value() == $value) {
+                return $index;
             }
-        });
 
-        return $neededIndex;
+            $current = $current->next();
+            $index++;
+        }
+
+        return -1;
     }
 
     public function contains($value, bool $strict = false)
@@ -164,7 +165,7 @@ class LinkedList
             return;
         }
 
-        $this->each(function (Node $item, $i) use ($value, $all, &$deleted) {
+        $this->each(function (Node $item) use ($value) {
             if ($item->value() === $value) {
                 $this->deleteNode($item);
             }
