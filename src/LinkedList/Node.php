@@ -6,10 +6,10 @@ namespace App\LinkedList;
 
 class Node
 {
-    private int $value;
+    private $value;
     private ?Node $next = null;
 
-    public function __construct(int $value)
+    public function __construct($value)
     {
         $this->value = $value;
     }

@@ -49,7 +49,7 @@ class LinkedList
 
         $value = $this->first->value();
 
-        $this->first = $this->first->next();
+        $this->deleteNode($this->first);
 
         return $value;
     }
@@ -62,9 +62,7 @@ class LinkedList
 
         $value = $this->last->value();
 
-        $previous = $this->getPrevious($this->last);
-        $previous->setNext(null);
-        $this->last = null;
+        $this->deleteNode($this->last);
 
         return $value;
     }
@@ -92,6 +90,8 @@ class LinkedList
     protected function getPrevious($node)
     {
         $current = $this->first;
+        $previous = null;
+
         while ($current !== $node) {
             $previous = $current;
             $current = $current->next();
@@ -102,13 +102,18 @@ class LinkedList
 
     protected function deleteNode($node)
     {
-        if ($node === $this->first) {
-            $this->first = $node->next();
+        $previous = $this->getPrevious($node);
+
+        if ($node === $this->last) {
+            $this->last = $previous;
+        }
+
+        if (! $previous) {
+            $this->first = null;
 
             return;
         }
 
-        $previous = $this->getPrevious($node);
         $previous->setNext($node->next());
     }
 }
