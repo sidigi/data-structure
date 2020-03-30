@@ -18,6 +18,11 @@ trait HasNodes
         return ! $this->first;
     }
 
+    public function peek()
+    {
+        return $this->last;
+    }
+
     protected function each(callable $callback)
     {
         $current = $this->first;

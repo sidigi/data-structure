@@ -1,6 +1,6 @@
 <?php
 
-use App\Str;
+use App\Str\Str;
 
 require __DIR__.'/../vendor/autoload.php';
 
@@ -10,4 +10,4 @@ print_r($str->reverse('abcdefg'));*/
 
 //balance
 $str = new Str();
-var_dump($str->isBalance('sdf))))'));
+var_dump($str->isBalanced('sdf))))'));

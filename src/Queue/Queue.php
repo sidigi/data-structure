@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Stack;
+namespace App\Queue;
 
 use App\LinkedList\LinkedList;
 
-class Stack
+class Queue
 {
     private LinkedList $linkedList;
 
@@ -13,19 +13,26 @@ class Stack
         $this->linkedList = new LinkedList;
     }
 
-    public function push($value)
+    public function add($value)
     {
-        $this->linkedList->addLast($value);
+        $this->linkedList->addFirst($value);
     }
 
-    public function pop()
+    public function remove()
     {
         return $this->linkedList->pop();
     }
 
-    public function peek()
+    public function reverse()
     {
-        return $this->linkedList->peek();
+        $stack = new LinkedList;
+
+        while (! $this->isEmpty()) {
+            $value = $this->remove();
+            $stack->addFirst($value);
+        }
+
+        $this->linkedList = $stack;
     }
 
     public function isEmpty()
