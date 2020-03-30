@@ -23,9 +23,6 @@ class PriorityQueue
 
         $this->items[$this->shiftItemsToInsert($value)] = $value;
         $this->count++;
-
-        //print_r($this->count);
-        print_r($this->items);
     }
 
     public function shiftItemsToInsert($value)
