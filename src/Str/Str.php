@@ -13,4 +13,14 @@ class Str
     {
         return (new Expression($str))->isBalanced();
     }
+
+    public function firstUnrepeatedChar(string $str)
+    {
+        return (new CharFinder($str))->findFirstUnrepeatingChar();
+    }
+
+    public function firstRepeatedChar(string $str)
+    {
+        return (new CharFinder($str))->findFirstRepeatingChar();
+    }
 }

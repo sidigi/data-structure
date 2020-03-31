@@ -13,6 +13,11 @@ class LinkedList
     private ?Node $first = null;
     private ?Node $last = null;
 
+    public function first()
+    {
+        return $this->first;
+    }
+
     public function addFirst($value)
     {
         $node = new Node($value);
@@ -87,6 +92,11 @@ class LinkedList
         $this->last->setNext(null);
     }
 
+    public function isEmpty()
+    {
+        return ! $this->first;
+    }
+
     protected function getPrevious($node)
     {
         $current = $this->first;
@@ -98,6 +108,11 @@ class LinkedList
         }
 
         return $previous;
+    }
+
+    public function remove($node)
+    {
+        $this->deleteNode($node);
     }
 
     protected function deleteNode($node)
