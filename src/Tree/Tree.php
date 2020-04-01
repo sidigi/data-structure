@@ -52,6 +52,20 @@ class Tree
         return false;
     }
 
+    public function equals(?self $tree)
+    {
+        if (! $tree) {
+            return false;
+        }
+
+        return $this->_equals($tree->root, $this->root);
+    }
+
+    public function isBinarySearch()
+    {
+        return $this->_isBinarySearch($this->root, PHP_INT_MIN, PHP_INT_MAX);
+    }
+
     public function traversePreOrder()
     {
         return $this->_traversePreOrder($this->root);
@@ -75,6 +89,65 @@ class Tree
     public function min()
     {
         return $this->_min($this->root);
+    }
+
+    public function nodesAtDistance(int $distance)
+    {
+        return $this->_nodesAtDistance($this->root, $distance);
+    }
+
+    public function traverseLevelOrder()
+    {
+        for ($i = 0; $i <= $this->height(); $i++) {
+            foreach ($this->nodesAtDistance($i) as $item) {
+                var_dump($item);
+            }
+        }
+    }
+
+    private function _nodesAtDistance(?Node $node, int $distance)
+    {
+        if (! $node) {
+            return [];
+        }
+
+        if ($distance === 0) {
+            return [$node->value()];
+        }
+
+        return array_merge(
+            $this->_nodesAtDistance($node->left(), $distance - 1),
+            $this->_nodesAtDistance($node->right(), $distance - 1)
+        );
+    }
+
+    private function _isBinarySearch(?Node $node, int $min, int $max)
+    {
+        if (! $node) {
+            return true;
+        }
+
+        if ($min > $node->value() || $node->value() > $max) {
+            return false;
+        }
+
+        return $this->_isBinarySearch($node->left(), $min, $node->value() - 1)
+            && $this->_isBinarySearch($node->right(), $node->value() + 1, $max);
+    }
+
+    private function _equals(?Node $node1, ?Node $node2)
+    {
+        if (! $node1 && ! $node2) {
+            return true;
+        }
+
+        if ($node1 && $node2) {
+            return $node1->value() === $node2->value()
+                && $this->_equals($node1->left(), $node2->left())
+                && $this->_equals($node1->right(), $node2->right());
+        }
+
+        return false;
     }
 
     private function _min(Node $root)
@@ -106,9 +179,11 @@ class Tree
     private function _traversePreOrder(?Node $root)
     {
         if ($root) {
-            $result = [$root->value()];
-            $result = array_merge($result, $this->_traversePreOrder($root->left()));
-            $result = array_merge($result, $this->_traversePreOrder($root->right()));
+            $result = array_merge(
+                [$root->value()],
+                $this->_traversePreOrder($root->left()),
+                $this->_traversePreOrder($root->right())
+            );
         }
 
         return $result ?? [];
@@ -117,9 +192,11 @@ class Tree
     private function _traversePostOrder(?Node $root)
     {
         if ($root) {
-            $result = $this->_traversePreOrder($root->left());
-            $result = array_merge($result, [$root->value()]);
-            $result = array_merge($result, $this->_traversePreOrder($root->right()));
+            $result = array_merge(
+                $this->_traversePreOrder($root->left()),
+                [$root->value()],
+                $this->_traversePreOrder($root->right())
+            );
         }
 
         return $result ?? [];
@@ -128,9 +205,11 @@ class Tree
     private function _traverseInOrder(?Node $root)
     {
         if ($root) {
-            $result = $this->_traversePreOrder($root->left());
-            $result = array_merge($result, $this->_traversePreOrder($root->right()));
-            $result = array_merge($result, [$root->value()]);
+            $result = array_merge(
+                $this->_traversePreOrder($root->left()),
+                $this->_traversePreOrder($root->right()),
+                [$root->value()]
+            );
         }
 
         return $result ?? [];
