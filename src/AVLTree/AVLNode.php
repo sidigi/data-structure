@@ -44,12 +44,12 @@ class AVLNode
         return $this->rightChild;
     }
 
-    public function setLeft(self $node)
+    public function setLeft(?self $node)
     {
         $this->leftChild = $node;
     }
 
-    public function setRight(self $node)
+    public function setRight(?self $node)
     {
         $this->rightChild = $node;
     }
