@@ -14,6 +14,16 @@ class Heap
         $this->bubbleUp();
     }
 
+    public function isEmpty()
+    {
+        return $this->size === 0;
+    }
+
+    public function max()
+    {
+        return $this->items[0];
+    }
+
     private function bubbleUp()
     {
         $index = $this->size - 1;
