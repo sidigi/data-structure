@@ -1,5 +1,6 @@
 <?php
 
+use App\Sorting\BucketSort;
 use App\Sorting\CountingSort;
 use App\Sorting\InsertionSort;
 use App\Sorting\MergeSort;
@@ -20,5 +21,10 @@ $sort = [15, 6, 3, 1, 22, 10, 13];
 $sorting->sort($sort);
 print_r($sort);*/
 
-$sorting = new CountingSort();
-print_r($sorting->sort([15, 6, 3, 1, 22, 10, 13]));
+/*$sorting = new CountingSort();
+print_r($sorting->sort([15, 6, 3, 1, 22, 10, 13]));*/
+
+$sorting = new BucketSort();
+$sort = [7, 1, 3, 5, 3];
+$sorting->sort($sort);
+print_r($sort);
